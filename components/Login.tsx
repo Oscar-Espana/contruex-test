@@ -2,13 +2,22 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { TextInput } from "@/components/formik/TextInput";
+import useSubmit from "@/hooks/useSubmit";
+import { loginUser } from "@/services/loginUser";
+import { IUserLogin } from "@/interfaces/User";
 
-const defaultUser = {
-  email: "",
+const defaultUser: IUserLogin = {
+  username: "",
   password: "",
 };
 
 const Login = () => {
+  const { isLoading, submit } = useSubmit({
+    promise: loginUser,
+    onSuccess(data) {
+      alert(JSON.stringify(data));
+    },
+  });
   return (
     <Box
       sx={{
@@ -20,7 +29,7 @@ const Login = () => {
       <Formik
         initialValues={defaultUser}
         onSubmit={(values) => {
-          alert(JSON.stringify(values, null, 2));
+          submit(values);
         }}
       >
         {({ handleSubmit }) => (
@@ -48,7 +57,7 @@ const Login = () => {
             >
               Login
             </Typography>
-            <TextInput type="email" name="email" label="Correo" />
+            <TextInput type="text" name="username" label="Usuario" />
             <TextInput type="password" name="password" label="Contraseña" />
 
             <Button variant="contained" sx={{ mt: 1 }} type="submit">
