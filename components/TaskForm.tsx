@@ -3,20 +3,37 @@ import { Formik } from "formik";
 import React, { FC } from "react";
 import { TextInput } from "./formik/TextInput";
 import { ITask } from "@/interfaces/Task";
+import useSubmit from "@/hooks/useSubmit";
+import { createTask } from "@/services/tasks/createTask";
+import { updateTask } from "@/services/tasks/updateTask";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   taskSelected: ITask | undefined;
+  onSuccessSavingTask: () => void;
 }
 
-const TaskForm: FC<Props> = ({ isOpen, onClose, taskSelected }) => {
+const TaskForm: FC<Props> = ({
+  isOpen,
+  onClose,
+  taskSelected,
+  onSuccessSavingTask,
+}) => {
   const defaultTask: ITask = {
     id: Date.now().toString(),
     title: "",
     description: "",
     dueDate: new Date(),
   };
+
+  const { submit } = useSubmit({
+    promise: taskSelected ? updateTask : createTask,
+    onSuccess() {
+      onClose();
+      onSuccessSavingTask();
+    },
+  });
 
   return (
     <Drawer
@@ -40,7 +57,8 @@ const TaskForm: FC<Props> = ({ isOpen, onClose, taskSelected }) => {
         initialValues={taskSelected || defaultTask}
         enableReinitialize
         onSubmit={(values) => {
-          console.log("values", values);
+          console.log("saving", values);
+          submit(values);
         }}
       >
         {({ handleSubmit }) => (

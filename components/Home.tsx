@@ -1,5 +1,5 @@
-import { Box, Button, Container, Drawer, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Box, Button, Container, Typography } from "@mui/material";
 import TasksDatagrid from "./TasksDatagrid";
 import { useFetch } from "@/hooks/useFetch";
 import { ITask } from "@/interfaces/Task";
@@ -11,10 +11,14 @@ const Home = () => {
     undefined
   );
 
-  const { data, isLoading } = useFetch<ITask[]>({
+  const { data, isLoading, reload } = useFetch<ITask[]>({
     url: "/api/tasks",
     defaultValue: [],
   });
+
+  const handleSaveForm = () => {
+    reload();
+  };
 
   return (
     <Container>
@@ -49,6 +53,7 @@ const Home = () => {
           isOpen={isOpenModal}
           onClose={() => setIsOpenModal(false)}
           taskSelected={taskSelected}
+          onSuccessSavingTask={handleSaveForm}
         />
         <TasksDatagrid
           isLoading={isLoading}
