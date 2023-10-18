@@ -6,11 +6,17 @@ import { Box, IconButton } from "@mui/material";
 import { ITask } from "@/interfaces/Task";
 
 interface Props {
+  isLoading: boolean;
   tasks: ITask[];
   onEditTask: (idTask: string) => void;
   onRemoveTask: (idTask: string) => void;
 }
-const TasksDatagrid = ({ tasks = [], onEditTask, onRemoveTask }: Props) => {
+const TasksDatagrid = ({
+  isLoading,
+  tasks = [],
+  onEditTask,
+  onRemoveTask,
+}: Props) => {
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -40,7 +46,7 @@ const TasksDatagrid = ({ tasks = [], onEditTask, onRemoveTask }: Props) => {
     {
       field: "title",
       headerName: "Título",
-      minWidth: 125,
+      minWidth: 175,
       renderCell: (params: GridRenderCellParams) => {
         const title = params.row.title || "";
         return <>{title}</>;
@@ -49,7 +55,7 @@ const TasksDatagrid = ({ tasks = [], onEditTask, onRemoveTask }: Props) => {
     {
       field: "description",
       headerName: "Descripción",
-      minWidth: 150,
+      minWidth: 275,
       renderCell: (params: GridRenderCellParams) => {
         const description = params.row.description || "";
         return <>{description}</>;
@@ -58,18 +64,19 @@ const TasksDatagrid = ({ tasks = [], onEditTask, onRemoveTask }: Props) => {
     {
       field: "dueDate",
       headerName: "Fecha Vencimiento",
-      minWidth: 150,
+      minWidth: 250,
       renderCell: (params: GridRenderCellParams) => {
-        const dueDate = params.row.dueDate || "";
+        const dueDate = params.row.dueDate
+          ? new Date(params.row.dueDate).toDateString()
+          : "";
         return <>{dueDate}</>;
       },
     },
-    // { field: "budget", headerName: "Presupuesto" },
   ];
 
   return (
     <div style={{ height: 400, width: "100%" }}>
-      <DataGrid rows={tasks} columns={columns} hideFooter />
+      <DataGrid loading={isLoading} rows={tasks} columns={columns} hideFooter />
     </div>
   );
 };

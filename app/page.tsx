@@ -1,9 +1,6 @@
-import { Typography } from "@mui/material";
+"use client";
+import Home from "@/components/Home";
 
-export default function Home() {
-  return (
-    <main>
-      <Typography variant="h1">Hello World</Typography>
-    </main>
-  );
+export default function HomePage() {
+  return <Home />;
 }
