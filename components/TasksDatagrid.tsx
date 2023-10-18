@@ -8,8 +8,8 @@ import { ITask } from "@/interfaces/Task";
 interface Props {
   isLoading: boolean;
   tasks: ITask[];
-  onEditTask: (idTask: string) => void;
-  onRemoveTask: (idTask: string) => void;
+  onEditTask: (task: ITask) => void;
+  onRemoveTask: (task: ITask) => void;
 }
 const TasksDatagrid = ({
   isLoading,
@@ -27,14 +27,14 @@ const TasksDatagrid = ({
           <Box>
             <IconButton
               onClick={() => {
-                onEditTask(id);
+                onEditTask(params.row);
               }}
             >
               <EditIcon />
             </IconButton>
             <IconButton
               onClick={() => {
-                onRemoveTask(id);
+                onRemoveTask(params.row);
               }}
             >
               <DeleteIcon />
