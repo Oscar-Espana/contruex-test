@@ -3,8 +3,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { Formik } from "formik";
 import { TextInput } from "@/components/formik/TextInput";
 import useSubmit from "@/hooks/useSubmit";
-import { loginUser } from "@/services/loginUser";
 import { IUserLogin } from "@/interfaces/User";
+import { registerUser } from "@/services/registerUser";
 
 const defaultUser: IUserLogin = {
   username: "",
@@ -13,7 +13,7 @@ const defaultUser: IUserLogin = {
 
 const Register = () => {
   const { isLoading, submit } = useSubmit({
-    promise: loginUser,
+    promise: registerUser,
     onSuccess(data) {
       alert(JSON.stringify(data));
     },
