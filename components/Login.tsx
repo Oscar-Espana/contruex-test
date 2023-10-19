@@ -1,11 +1,14 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Formik } from "formik";
+import Cookies from "js-cookie";
 import { TextInput } from "@/components/formik/TextInput";
 import useSubmit from "@/hooks/useSubmit";
 import { loginUser } from "@/services/loginUser";
 import { IUserLogin } from "@/interfaces/User";
 import { userValidation } from "@/utils/validationSchema";
+import { useRouter } from "next/navigation";
+import { USER_LOGIN_COOKIE } from "@/constants/cookies";
 
 const defaultUser: IUserLogin = {
   username: "",
@@ -13,10 +16,12 @@ const defaultUser: IUserLogin = {
 };
 
 const Login = () => {
+  const { push } = useRouter();
   const { submit } = useSubmit({
     promise: loginUser,
     onSuccess(data) {
-      alert(JSON.stringify(data));
+      Cookies.set(USER_LOGIN_COOKIE, JSON.stringify(true));
+      push("/");
     },
   });
   return (
@@ -65,7 +70,9 @@ const Login = () => {
             <Button variant="contained" sx={{ mt: 1 }} type="submit">
               Iniciar sesión
             </Button>
-            <Button variant="text">Registrar nuevo usuario</Button>
+            <Button variant="text" onClick={() => push("/register")}>
+              Registrar nuevo usuario
+            </Button>
           </Box>
         )}
       </Formik>

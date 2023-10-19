@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   Box,
@@ -7,12 +8,16 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
+import Cookies from "js-cookie";
 import TasksDatagrid from "./TasksDatagrid";
 import { useFetch } from "@/hooks/useFetch";
 import { ITask } from "@/interfaces/Task";
 import TaskForm from "./TaskForm";
+import { USER_LOGIN_COOKIE } from "@/constants/cookies";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const { replace } = useRouter();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [taskSelected, setTaskSelected] = useState<ITask | undefined>(
     undefined
@@ -27,6 +32,11 @@ const Home = () => {
     reload();
   };
 
+  const handleCloseSession = () => {
+    Cookies.remove(USER_LOGIN_COOKIE);
+    replace("/login");
+  };
+
   return (
     <>
       <AppBar position="static">
@@ -34,7 +44,9 @@ const Home = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Construtex
           </Typography>
-          <Button color="inherit">Cerrar sesión</Button>
+          <Button color="inherit" onClick={handleCloseSession}>
+            Cerrar sesión
+          </Button>
         </Toolbar>
       </AppBar>
       <Container>

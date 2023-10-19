@@ -6,6 +6,7 @@ import useSubmit from "@/hooks/useSubmit";
 import { IUserLogin } from "@/interfaces/User";
 import { registerUser } from "@/services/registerUser";
 import { userValidation } from "@/utils/validationSchema";
+import { useRouter } from "next/navigation";
 
 const defaultUser: IUserLogin = {
   username: "",
@@ -13,10 +14,11 @@ const defaultUser: IUserLogin = {
 };
 
 const Register = () => {
+  const { push } = useRouter();
   const { submit } = useSubmit({
     promise: registerUser,
-    onSuccess(data) {
-      alert(JSON.stringify(data));
+    onSuccess() {
+      push("/");
     },
   });
   return (
@@ -65,7 +67,9 @@ const Register = () => {
             <Button variant="contained" sx={{ mt: 1 }} type="submit">
               Crear usuario
             </Button>
-            <Button variant="text">Iniciar sesión</Button>
+            <Button variant="text" onClick={() => push("/login")}>
+              Iniciar sesión
+            </Button>
           </Box>
         )}
       </Formik>
