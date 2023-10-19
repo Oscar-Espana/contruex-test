@@ -1,4 +1,6 @@
+import { hideLoading, showLoading } from "@/store/slices/uiSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 function useSubmit<Params, Response>({
   promise,
@@ -9,9 +11,11 @@ function useSubmit<Params, Response>({
   onSuccess?: (data: Awaited<ReturnType<typeof promise>>) => void;
   onError?: (error: string) => void;
 }) {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   const submit = async (params: Params) => {
+    dispatch(showLoading());
     setIsLoading(true);
     try {
       const result = await promise(params);
@@ -22,6 +26,7 @@ function useSubmit<Params, Response>({
       onError && onError(errorMessage);
     } finally {
       setIsLoading(false);
+      dispatch(hideLoading());
     }
   };
 
