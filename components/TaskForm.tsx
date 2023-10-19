@@ -1,11 +1,13 @@
 import { Box, Button, Drawer, Typography } from "@mui/material";
 import { Formik } from "formik";
 import React, { FC } from "react";
-import { TextInput } from "./formik/TextInput";
 import { ITask } from "@/interfaces/Task";
 import useSubmit from "@/hooks/useSubmit";
 import { createTask } from "@/services/tasks/createTask";
 import { updateTask } from "@/services/tasks/updateTask";
+import { TextInput } from "./formik/TextInput";
+import { CustomDateTimePicker } from "./formik/CustomDateTimePicker";
+import { taskValidation } from "@/utils/validationSchema";
 
 interface Props {
   isOpen: boolean;
@@ -24,7 +26,7 @@ const TaskForm: FC<Props> = ({
     id: Date.now().toString(),
     title: "",
     description: "",
-    dueDate: new Date(),
+    dueDate: null,
   };
 
   const { submit } = useSubmit({
@@ -55,9 +57,9 @@ const TaskForm: FC<Props> = ({
     >
       <Formik
         initialValues={taskSelected || defaultTask}
+        validationSchema={taskValidation}
         enableReinitialize
         onSubmit={(values) => {
-          console.log("saving", values);
           submit(values);
         }}
       >
@@ -92,6 +94,7 @@ const TaskForm: FC<Props> = ({
               name="description"
               label="Descripción"
             />
+            <CustomDateTimePicker label="Fecha" name="dueDate" />
 
             <Button variant="contained" sx={{ mt: 1 }} type="submit">
               Guardar

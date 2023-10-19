@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/EditOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box, IconButton } from "@mui/material";
 import { ITask } from "@/interfaces/Task";
+import dayjs from "dayjs";
 
 interface Props {
   isLoading: boolean;
@@ -67,7 +68,7 @@ const TasksDatagrid = ({
       minWidth: 250,
       renderCell: (params: GridRenderCellParams) => {
         const dueDate = params.row.dueDate
-          ? new Date(params.row.dueDate).toDateString()
+          ? `${dayjs(new Date(params.row.dueDate)).format("YYYY/MM/DD HH:mm")}`
           : "";
         return <>{dueDate}</>;
       },
