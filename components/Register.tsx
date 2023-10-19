@@ -5,6 +5,7 @@ import { TextInput } from "@/components/formik/TextInput";
 import useSubmit from "@/hooks/useSubmit";
 import { IUserLogin } from "@/interfaces/User";
 import { registerUser } from "@/services/registerUser";
+import { userValidation } from "@/utils/validationSchema";
 
 const defaultUser: IUserLogin = {
   username: "",
@@ -12,7 +13,7 @@ const defaultUser: IUserLogin = {
 };
 
 const Register = () => {
-  const { isLoading, submit } = useSubmit({
+  const { submit } = useSubmit({
     promise: registerUser,
     onSuccess(data) {
       alert(JSON.stringify(data));
@@ -28,6 +29,7 @@ const Register = () => {
     >
       <Formik
         initialValues={defaultUser}
+        validationSchema={userValidation}
         onSubmit={(values) => {
           submit(values);
         }}
